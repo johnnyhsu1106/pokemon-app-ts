@@ -1,26 +1,21 @@
 import { Box, Badge, WrapItem, Wrap, Text, Stack } from '@chakra-ui/react';
-import { FC } from 'react';
 import { IPokemonType } from '../../types/interfaces';
 
 interface PokemonTypesProps {
-  types: IPokemonType[] | [];
+  types: IPokemonType[];
 };
 
-const PokemonTypes: FC<PokemonTypesProps> = ({ types }) => {
-  if (!types) {
-    return null;
-  }
-
+const PokemonTypes = ({ types } : PokemonTypesProps) => {
   return (
     <Stack pb={3}>
       <Text color='white'>Type</Text>
       <Box>
         <Wrap>
           <WrapItem>
-            {types.map((item, i) => {  
+            {types?.map((type, i) => {  
               return (
               <Badge key={i} borderWidth={3} rounded='md' borderColor='red.800'>
-                {item?.type?.name}
+                {type?.type?.name}
               </Badge>
             )
             })}

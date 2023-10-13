@@ -1,15 +1,13 @@
 import { Box, Button  } from '@chakra-ui/react';
-import { FC } from 'react';
-
 
 interface CaptureButtonProps {
   isDisabled: boolean;
   onClick: () => void;
 }
-const CaptureButton: FC<CaptureButtonProps> = ({
+const CaptureButton = ({
   isDisabled,
   onClick
-}) => {
+}: CaptureButtonProps) => {
 
   return (
     <Box>

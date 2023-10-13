@@ -5,8 +5,11 @@ export interface IPokemonType {
   }
 };
 
-export interface IPokemonBaseStats {
-  base_stat: string;
+export interface IPokemonStats {
+  base_stat: number;
+  stat: {
+    name: string;
+  }
 };
 
 export interface IPokemon {
@@ -14,7 +17,7 @@ export interface IPokemon {
   name: string;
   order: number | undefined;
   types: IPokemonType[];
-  stats: IPokemonBaseStats[];
+  stats: IPokemonStats[];
 };
 
 export interface ICapturedPokemon extends IPokemon {

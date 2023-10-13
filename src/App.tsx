@@ -6,14 +6,19 @@ import Pokemon from './components/Pokemon/Pokemon';
 import CaptureButton from './components/CaptureButton/CaptureButton';
 import CapturedPokemonList from './components/CapturedPokemonList/CapturedPokemonList';
 
-import { IPokemon, ICapturedPokemon  } from './types/interfaces';
+import { IPokemon, ICapturedPokemon } from './types/interfaces';
 import './App.css'
 
 const MAX_CAPTURED_POKEMONS_NUM = 5;
 
-
 const App = () => {
-  const [pokemon, setPokemon] = useState<IPokemon | {} >({});
+  const [pokemon, setPokemon] = useState<IPokemon>({
+    image: '',
+    name: '',
+    order: undefined,
+    types: [],
+    stats: []
+  });
   const [capturedPokemons, setCapturedPokemons] = useState<ICapturedPokemon[]>([]);
 
   const isCaptureButtonDisabled = capturedPokemons.length >= MAX_CAPTURED_POKEMONS_NUM;

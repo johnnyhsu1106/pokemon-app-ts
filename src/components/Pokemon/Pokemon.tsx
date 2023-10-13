@@ -4,7 +4,15 @@ import PokemonName from './PokemonName';
 import PokemonOrder from './PokemonOrder';
 import PokemonTypes from './PokemonTypes';
 import PokemonStatsList from './PokemonStatsList';
-import { IPokemon } from '../../types/interfaces';
+import { IPokemonType, IPokemonStats } from '../../types/interfaces';
+
+interface PokemonProps {
+  image: string;
+  name: string;
+  order: number | undefined;
+  types: IPokemonType[];
+  stats: IPokemonStats[];
+};
 
 const Pokemon = ({  
   image,
@@ -12,7 +20,7 @@ const Pokemon = ({
   order,
   types,
   stats,
-}: IPokemon) => {
+}: PokemonProps) => {
   return ( 
     <>
       <PokemonImage image={image} />

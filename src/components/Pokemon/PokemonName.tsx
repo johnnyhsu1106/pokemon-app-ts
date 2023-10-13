@@ -1,11 +1,10 @@
 import { Text } from '@chakra-ui/react';
-import { FC } from 'react';
 
-interface Props {
+interface PokemonNameProps {
   name: string;
 };
 
-const PokemonName: FC<Props> = ({ name }) => {
+const PokemonName = ({ name } : PokemonNameProps) => {
   if (!name) {
     return null;
   }

@@ -1,16 +1,14 @@
 import { Stack, Text } from '@chakra-ui/react';
-import { FC } from 'react';
 
 interface PokemonStatsProps {
   name: string;
-  baseStats: string;
+  baseStats: number;
 };
 
-
-const PokemonStats: FC<PokemonStatsProps> = ({
+const PokemonStats = ({
   name, 
   baseStats
-}) => {
+}: PokemonStatsProps) => {
 
   return (
     <Stack>

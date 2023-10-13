@@ -1,10 +1,10 @@
 import { HStack } from '@chakra-ui/react';
 import PokemonStats from './PokemonStats';
-import { IPokemonBaseStats } from '../../types/interfaces';
-import { FC } from 'react';
+import { IPokemonStats } from '../../types/interfaces';
+
 
 interface PokemonStatsListProps {
-  stats: IPokemonBaseStats[];
+  stats: IPokemonStats[];
 }
 
 const STATS_NAMES = [
@@ -16,9 +16,8 @@ const STATS_NAMES = [
   'Speed'
 ];
 
-
-const PokemonStatsList: FC<PokemonStatsListProps> = ({ stats }) => {
-  if (!stats) {
+const PokemonStatsList = ({ stats } : PokemonStatsListProps) => {
+  if (stats.length === 0) {
     return null;
   }
   
@@ -30,7 +29,7 @@ const PokemonStatsList: FC<PokemonStatsListProps> = ({ stats }) => {
             <PokemonStats 
               key={i} 
               name={STATS_NAME} 
-              baseStats={ stats[i].base_stat} />
+              baseStats={ stats[i].base_stat } />
           )
         })
       }

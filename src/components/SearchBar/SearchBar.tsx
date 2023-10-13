@@ -1,13 +1,13 @@
-import { FC, FormEvent, useRef } from 'react'
+import { FormEvent, useRef } from 'react'
 import { Button, HStack, Input, FormControl } from '@chakra-ui/react';
 
 interface SearchBarProps {
   onSubmitSearchForm: (query: string) => void; 
 };
 
-const SearchBar: FC<SearchBarProps> = ({
+const SearchBar = ({
   onSubmitSearchForm
-}) => {
+}: SearchBarProps) => {
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 

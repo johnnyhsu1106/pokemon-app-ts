@@ -1,14 +1,10 @@
-import {
-  Box,
-  Image,
-} from '@chakra-ui/react';
-import { FC } from 'react';
+import { Box, Image } from '@chakra-ui/react';
 
-interface Props {
+interface PokemonImageProsp {
   image: string;
 };
 
-const PokemonImage: FC<Props> = ({ image }) => {
+const PokemonImage = ({ image } : PokemonImageProsp) => {
   if (!image) {
     return null;
   }

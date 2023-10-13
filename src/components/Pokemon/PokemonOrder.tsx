@@ -1,11 +1,10 @@
 import { Text } from '@chakra-ui/react';
-import { FC } from 'react';
 
 interface PokemonOrderProps {
   order: number | undefined;
 };
 
-const PokemonOrder: FC<PokemonOrderProps> = ({ order }) => {
+const PokemonOrder = ({ order } : PokemonOrderProps) => {
   if (!order) {
     return null;
   }

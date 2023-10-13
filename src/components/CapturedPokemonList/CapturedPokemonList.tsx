@@ -1,16 +1,15 @@
 import { Box, Image, Text, WrapItem } from '@chakra-ui/react';
 import { ICapturedPokemon } from '../../types/interfaces';
-import { FC } from 'react';
 
 interface CapturedPokemonListProps {
   capturedPokemons: ICapturedPokemon[];
-   removeCapturedPokemon: (id: string) => void;
+  removeCapturedPokemon: (id: string) => void;
 };
 
-const CapturedPokemonList: FC<CapturedPokemonListProps> = ({
+const CapturedPokemonList = ({
   capturedPokemons,
   removeCapturedPokemon
-}) => {
+}: CapturedPokemonListProps) => {
   return (
     <Box rounded='lg'>
       <Text color='white' fontSize='xl' fontWeight={600}>Pocket</Text>
