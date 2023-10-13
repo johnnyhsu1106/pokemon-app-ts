@@ -89,9 +89,9 @@ const App = () => {
             <SearchBar onSubmitSearchForm={handleSearchPokemon} />
             <Pokemon {...pokemon}/>
             <CaptureButton
-                isDisabled={isCaptureButtonDisabled}
-                onClick={handleCapturePokemon}
-              />
+              isDisabled={isCaptureButtonDisabled}
+              onClick={handleCapturePokemon}
+            />
           </Flex>
 
           <Flex
