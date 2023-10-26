@@ -1,19 +1,16 @@
 import { FormEvent, useRef } from 'react'
 import { Button, HStack, Input, FormControl } from '@chakra-ui/react';
+import { usePokemonContext } from '../../context/PokemonContext';
 
-interface SearchBarProps {
-  onSubmitSearchForm: (query: string) => void; 
-};
 
-const SearchBar = ({
-  onSubmitSearchForm
-}: SearchBarProps) => {
+const SearchBar = () => {
+  const { handleSearchPokemon } = usePokemonContext();
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleSearchButtonClick = (e: FormEvent) => {
     e.preventDefault();
-    onSubmitSearchForm(inputRef.current?.value || '');
+    handleSearchPokemon(inputRef.current?.value || '');
     if (inputRef.current) {
       inputRef.current.value = '';
     }
