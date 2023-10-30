@@ -34,3 +34,32 @@ button.delete-btn {
   border-radius: 50%;
   cursor:pointer;
 }
+@media screen and (max-width: 980px) {
+  button.delete-btn {
+    top: 0px;
+    right: -5px;
+  }
+} 
+@media screen and (max-width: 640px) {
+  h5 .pokemon-type {
+    font-size: 0.8rem;
+  }
+
+  img.pokemon-image {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .pokemon-stats-list {
+    font-size: 0.65rem;
+  }
+
+  img.captured-pokemon {
+    width: 64px;
+    height: 64px;
+  }
+
+  button.delete-btn {
+    top: -5px;
+    right: 0;
+  }
+}

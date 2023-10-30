@@ -2,15 +2,18 @@ import { Card, Button } from 'react-bootstrap';
 import PokemonTypes from './PokemonTypes';
 import PokemonStatsList from './PokemonStatsList';
 import { usePokemonContext } from '../../context/PokemonContext';
+import { useViewportContext } from '../../context/ViewportContext';
 
 
 const PokemonCard = () => {
   const { 
-    pokemon,
     isError,
+    pokemon,
     isCaptureButtonDisabled,
     handlePokemonCapture
   } = usePokemonContext();
+
+  const { isMobile } = useViewportContext();
 
   if (isError) {
     return (
@@ -27,13 +30,13 @@ const PokemonCard = () => {
         <PokemonTypes types={pokemon?.types || []} />
         <PokemonStatsList stats={pokemon?.stats || []} />
         <Button
-          className='w-100 mt-4'
-          variant={`${isCaptureButtonDisabled ? 'light' : 'success'}`}
-          disabled={isCaptureButtonDisabled}
-          onClick={isCaptureButtonDisabled ? () => {} : handlePokemonCapture} 
-        >
-          {isCaptureButtonDisabled ? 'Pocket is full' : 'Capture'}
-      </Button>
+            className={`w-100 ${isMobile ? 'mt-0' : 'mt-4'}`}
+            variant={`${isCaptureButtonDisabled ? 'light' : 'success'}`}
+            disabled={isCaptureButtonDisabled}
+            onClick={isCaptureButtonDisabled ? () => {} : handlePokemonCapture} 
+          >
+            {isCaptureButtonDisabled ? 'Pocket is full' : 'Capture'}
+          </Button>
       </Card.Body>
     </Card>
 

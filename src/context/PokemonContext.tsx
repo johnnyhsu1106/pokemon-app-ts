@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ICapturedPokemon, IPokemon } from '../types/interfaces';
 
 interface IPokemonContext {
-  isError: boolean, 
-  pokemon: IPokemon | null,
+  isError: boolean;
+  pokemon: IPokemon | null;
   selectedPokemonName: string;
   pokemonNames: string[];
   prevPageUrl: string;

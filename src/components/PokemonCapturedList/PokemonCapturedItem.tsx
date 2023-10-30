@@ -1,4 +1,5 @@
 import { Card } from 'react-bootstrap';
+import { useViewportContext } from '../../context/ViewportContext';
 import { usePokemonContext } from '../../context/PokemonContext';
 import { ICapturedPokemon } from '../../types/interfaces';
 
@@ -12,6 +13,8 @@ const PokemonCapturedItem = ({ capturedPokemon}: PokemonCapturedItemProps ) => {
     handlePokemonInspect
    } = usePokemonContext();
 
+   const { isMobile } = useViewportContext()
+
   return (
     <Card className='captured-pokemon bg-dark text-white text-center'>
       <Card.Img
@@ -19,7 +22,7 @@ const PokemonCapturedItem = ({ capturedPokemon}: PokemonCapturedItemProps ) => {
         src={capturedPokemon.thumbnail}
         onClick={() => { handlePokemonInspect(capturedPokemon.id)}}
       />
-      <Card.Text className='mb-1'>{capturedPokemon.name}</Card.Text>
+      {isMobile ? null : <Card.Text className='mb-1 text-capitalize'>{capturedPokemon.name}</Card.Text>}
 
       <button
         onClick={() => { handlePokemonRemove(capturedPokemon.capturedId) }}  

@@ -1,6 +1,7 @@
 import { Button, Stack } from 'react-bootstrap';
 import PokemonCapturedItem from './PokemonCapturedItem';
 import { usePokemonContext } from '../../context/PokemonContext';
+import { useViewportContext } from '../../context/ViewportContext';
 
 
 const PokemonCapturedList = () => {
@@ -8,7 +9,44 @@ const PokemonCapturedList = () => {
     capturedPokemons,  
     MAX_CAPTURED_POKEMONS_NUM,
     handlePokemonsClear 
-  } = usePokemonContext();
+  } = usePokemonContext(); 
+  
+  const { isMobile } = useViewportContext();
+
+  if (isMobile) {
+    return (
+      <>
+        <Stack
+          className='mt-3 justify-content-between' 
+          direction='horizontal' 
+          gap={3}>
+          <p className='my-0'>Pocket Max {MAX_CAPTURED_POKEMONS_NUM} </p>
+          <Button
+            className='w-25' 
+            variant='outline-danger'
+            onClick={handlePokemonsClear}
+          >
+            Clear
+          </Button>
+        </Stack>
+        <Stack
+          className='mx-auto my-3 align-items-center' 
+          direction='horizontal'
+          gap={2}
+        >
+        { capturedPokemons.map((capturedPokemon) => {
+          return (
+            <PokemonCapturedItem 
+              key={capturedPokemon.capturedId} 
+              capturedPokemon={capturedPokemon} 
+            />
+          )}
+        )}
+        </Stack>
+
+      </>
+    )
+  }
   
   return (
     <>
