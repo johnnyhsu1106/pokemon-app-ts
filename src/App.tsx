@@ -1,50 +1,33 @@
-import { Box, Stack, Center, Flex } from '@chakra-ui/react';
-import SearchBar from './components/SearchBar/SearchBar';
-import Pokemon from './components/Pokemon/Pokemon';
-import CaptureButton from './components/CaptureButton/CaptureButton';
-import CapturedPokemonList from './components/CapturedPokemonList/CapturedPokemonList';
+import { FC } from 'react';
+import { Row, Col, Container } from 'react-bootstrap';
 import { PokemonProvider } from './context/PokemonContext';
+import PokemonSearchBar from './components/PokemonSearchBar/PokemonSearchBar';
+import PokemonNavigation from './components/PokemonNavigation/PokemonNavigation';
+import PokemonCard from './components/PokemonCard/PokemonCard';
+import PokemonCapturedList from './components/PokemonCapturedList/PokemonCapturedList';
+
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const App = () => {
+
+const App: FC = () => {
   return (
     <PokemonProvider>
-      <Center h='100vh'>
-        <Box w='full'>
-          <Stack direction='row' spacing={5} justifyContent='center'>
-            <Flex
-              flexDirection='column'
-              alignItems='center'
-              borderWidth={3}
-              rounded='xl'
-              borderColor='white'
-              p={4}
-              bg='#222'
-            >
-              <SearchBar />
-              <Pokemon />
-              <CaptureButton />
-            </Flex>
-
-            <Flex
-              flexDirection='column'
-              alignItems='center'
-              minHeight='580px'
-              minWidth='150px'
-              borderWidth={3}
-              rounded='xl'
-              borderColor='white'
-              p={3}
-              bg='#222'
-              pos='relative'
-              left='-4px'
-            >
-              <CapturedPokemonList />
-            </Flex>
-          </Stack>
-        </Box>
-      </Center>
+      <Container className='d-flex flex-column justify-content-center vh-100'>
+        <PokemonSearchBar />
+        <Row>
+          <Col>
+            <PokemonNavigation />
+          </Col>  
+          <Col className='d-flex flex-column justify-content-center'>
+            <PokemonCard />
+          </Col>
+          <Col className='d-flex flex-column align-items-center'>
+            <PokemonCapturedList />
+          </Col>
+        </Row>
+      </Container>
     </PokemonProvider>
   )
 }

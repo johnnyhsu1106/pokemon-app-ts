@@ -1,62 +1,36 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-  overflow: hidden;
+* {
+  margin: 0;
+  padding: 0;
+  color: #fff;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 .search-form {
   display: flex;
 }
 
-.delete-btn {
+.pokeomn-nav-item.selected {
+  color: #000;
+  background-color: #fff;
+}
+
+.captured-pokemon {
+  position: relative;
+  width: auto;
+  cursor: pointer;
+}
+
+button.delete-btn {
   width: 20px;
   height: 20px;
   position: absolute;
   top: 10px;
-  right: 0;
+  right: -30px;
   font-weight: 200;
   color: #fff;
+  background: none;;
   border: 1px #fff solid;
   line-height: 14px;
-  font-size: 24px;
+  font-size: 20px;
   border-radius: 50%;
   cursor:pointer;
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

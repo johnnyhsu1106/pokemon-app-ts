@@ -1,20 +1,32 @@
 import { createContext, useContext, useState, useEffect, ReactNode} from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { IPokemon, ICapturedPokemon } from '../types/interfaces';
+import { ICapturedPokemon, IPokemon } from '../types/interfaces';
 
 interface IPokemonContext {
-  pokemon: IPokemon;
+  isError: boolean, 
+  pokemon: IPokemon | null,
+  selectedPokemonName: string;
+  pokemonNames: string[];
+  prevPageUrl: string;
+  nextPageUrl: string;
   capturedPokemons: ICapturedPokemon[];
-  isCaptureButtonDisabled: boolean
-  handleSearchPokemon: (query: string) => void
-  handleCapturePokemon: () => void;
-  handlePokemonRemove: (id: string) => void;
+  isCaptureButtonDisabled: boolean;
+  MAX_CAPTURED_POKEMONS_NUM: number;
+  handlePokemonSearch: (name: string) => void;
+  handlePokemonSelect: (name: string) => void;
+  handlePrevButtonClick: () => void;
+  handleNextButtonClick: () => void;
+  handlePokemonCapture: () => void;
+  handlePokemonInspect: (id?: number) => void;
+  handlePokemonRemove: (capturedId: string) => void;
+  handlePokemonsClear: () => void;
 };
 
 interface PokemonProviderProps {
-  children: ReactNode;
+  children: ReactNode
 };
 
+const API_ENDPOINT_BASE: string = 'https://pokeapi.co/api/v2/pokemon';
 const MAX_CAPTURED_POKEMONS_NUM: number = 5;
 const PokemonContext = createContext<IPokemonContext | null>(null);
 
@@ -25,79 +37,156 @@ const usePokemonContext = () => {
     throw new Error('usePokemonContext must be used within PokemonProvider');
   }
   return pokemonContext;
-};
-
+}
 
 const PokemonProvider = ({ children }: PokemonProviderProps) => {
-  const [pokemon, setPokemon] = useState<IPokemon>({
-    image: '',
-    name: '',
-    order: undefined,
-    types: [],
-    stats: []
-  });
+  const [pokemonNames, setPokemonNames] = useState([]);
+  const [currPageUrl, setCurrPageUrl] = useState(API_ENDPOINT_BASE);
+  const [prevPageUrl, setPrevPageUrl] = useState('');
+  const [nextPageUrl, setNextPageUrl] = useState('');
+  const [selectedPokemonName, setSelectedPokemonName] = useState('bulbasaur');
+  const [isError, setIsError] = useState(false);
+  const [pokemon, setPokemon] = useState<IPokemon | null>(null);
   const [capturedPokemons, setCapturedPokemons] = useState<ICapturedPokemon[]>([]);
-  
-  const isCaptureButtonDisabled = capturedPokemons.length >= MAX_CAPTURED_POKEMONS_NUM;
-  
+
+  const isCaptureButtonDisabled: boolean = capturedPokemons.length >= MAX_CAPTURED_POKEMONS_NUM || isError;
+
   useEffect(() => {
-    fetchPokemon('1');
-  }, []);
+    fetchPokemon(selectedPokemonName);
+  }, [selectedPokemonName]);
 
-  const fetchPokemon = async (query: string): Promise<void> => {
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchPokemons = async () => {
+      try {
+        const res = await fetch(currPageUrl);
+        if (!res.ok) {
+          throw new Error('Invalid HTTP Status Code');
+        }
+        const data = await res.json();
+        setPokemonNames(data?.results.map((result: IPokemon) => result.name));
+        setPrevPageUrl(data?.previous);
+        setNextPageUrl(data?.next);
+  
+      } catch (err: any) {
+        if (err.name === 'AbortError') {
+          return;
+        }
+        console.error(err); 
+      }
+    };
+
+
+    fetchPokemons();
+
+    return () => {
+      controller.abort();
+    };
+  }, [currPageUrl]);
+
+
+  const fetchPokemon = async (name: string) => {
+    setIsError(false);
+    
     try {
-      const req = await fetch(`https://pokeapi.co/api/v2/pokemon/${query}`); 
+      const req = await fetch(`${API_ENDPOINT_BASE}/${name}`); 
+      if (!req.ok) {
+        throw new Error('Cound not find this pokemon');
+      }
       const data = await req.json();
-
       setPokemon({
-        image: data?.sprites?.front_default || '',
-        name: data?.name || '',
+        id: data?.id,
+        name: data?.name,
+        thumbnail: data?.sprites?.front_default,
+        image: data?.sprites?.other?.['official-artwork']?.front_default,
         order: data?.order,
         types: data?.types,
         stats: data?.stats
       });
       
     } catch (err) {
-      console.error(err);
+      setIsError(true);
+      setPokemon(null);
+      console.error('error happen');
     }
   };
 
+  const handlePokemonSelect = (name: string) => {
+    setSelectedPokemonName(name);
+  };
 
-  const handleCapturePokemon = (): void => {
+  const handlePokemonCapture = () => {
     if (capturedPokemons.length > MAX_CAPTURED_POKEMONS_NUM) {
       return;
     }
 
     setCapturedPokemons((prevCapturedPokemons) => {
-      return [...prevCapturedPokemons, {...pokemon, id: uuidv4()}];
+      return [...prevCapturedPokemons, {...pokemon, capturedId: uuidv4() }];
     });
   };
 
-
-  const handleSearchPokemon = (query: string): void => {
-    if (!query || query.trim() === '') {
+  const handlePokemonSearch = (name: string) => {
+    if (!name || name.trim() === '') {
       return;
     }
 
-    fetchPokemon(query);
+    setSelectedPokemonName(name);
+  };
+
+  const handlePokemonInspect = (id?: number) => {
+    const capturedPokemon = capturedPokemons.find((capturedPokemon) => {
+      return capturedPokemon?.id === id;
+    });
+
+    if (!capturedPokemon) {
+      return;
+    }
+    const { capturedId, ...pokemon } = capturedPokemon
+    setPokemon(pokemon);
+    setIsError(false);
   };
   
-  const handlePokemonRemove = (id: string) => {
+  const handlePokemonRemove = (capturedId: string) => {
     setCapturedPokemons((prevCapturedPokemons) => {
       return prevCapturedPokemons.filter((prevCapturedPokemon) => {
-        return prevCapturedPokemon.id !== id;
+        return prevCapturedPokemon.capturedId !== capturedId;
       })
     });
   };
 
 
-  const value = {
+  const handlePokemonsClear = () => {
+    setCapturedPokemons([]);  
+  };
+
+
+  const handlePrevButtonClick = () => {
+    setCurrPageUrl(prevPageUrl);
+  };
+
+  const handleNextButtonClick = () => {
+    setCurrPageUrl(nextPageUrl);
+  };
+
+  const value: IPokemonContext = {
+    isError,
     pokemon,
+    selectedPokemonName,
+    pokemonNames,
+    prevPageUrl,
+    nextPageUrl,
     capturedPokemons,
     isCaptureButtonDisabled,
-    handleSearchPokemon,
-    handleCapturePokemon,
-    handlePokemonRemove
+    MAX_CAPTURED_POKEMONS_NUM,
+    handlePokemonSearch,
+    handlePokemonSelect,
+    handlePrevButtonClick,
+    handleNextButtonClick,
+    handlePokemonCapture,
+    handlePokemonInspect,
+    handlePokemonRemove,
+    handlePokemonsClear
   };
 
   return (

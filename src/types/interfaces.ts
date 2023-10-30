@@ -13,14 +13,16 @@ export interface IPokemonStats {
 };
 
 export interface IPokemon {
-  image: string;
-  name: string;
-  order: number | undefined;
-  types: IPokemonType[];
-  stats: IPokemonStats[];
+  id?: number,
+  name?: string;
+  thumbnail?: string;
+  image?: string;
+  order?: number;
+  types?: IPokemonType[];
+  stats?: IPokemonStats[];
 };
 
 export interface ICapturedPokemon extends IPokemon {
-  id: string;
+  capturedId: string;
 };
 
