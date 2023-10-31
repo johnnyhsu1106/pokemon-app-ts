@@ -1,5 +1,4 @@
-import { ReactNode, createContext, useContext } from 'react'
-import useViewport from '../hooks/useViewport';
+import { ReactNode, createContext, useContext, useState, useEffect } from 'react'
 
 interface IViewportContext {
   isMobile: boolean;
@@ -9,6 +8,7 @@ interface ViewportProviderProps {
   children: ReactNode;
 };
 
+const BREAKPOINT = 980;
 const ViewportContext = createContext<IViewportContext | null>(null);
 
 const useViewportContext = () => {
@@ -22,10 +22,23 @@ const useViewportContext = () => {
 }
 
 const ViewportProvider = ({ children }: ViewportProviderProps) => {
-  const width = useViewport();
+  const [width, setWidth] = useState<number>(window.innerWidth);
+
+  const handleWindowResize = () => {
+    setWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    }
+  }, []);
+
   
   const value = {
-    isMobile: width <= 980
+    isMobile: width <= BREAKPOINT
   };
 
   return (

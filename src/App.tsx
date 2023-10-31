@@ -5,15 +5,15 @@ import PokemonSearchBar from './components/PokemonSearchBar/PokemonSearchBar';
 import PokemonNavigation from './components/PokemonNavigation/PokemonNavigation';
 import PokemonCard from './components/PokemonCard/PokemonCard';
 import PokemonCapturedList from './components/PokemonCapturedList/PokemonCapturedList';
-import useViewport from './hooks/useViewport';
+import { useViewportContext } from './context/ViewportContext';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
-  const width = useViewport();
-
-  if (width <= 980) {
+  const { isMobile } = useViewportContext();
+  
+  if (isMobile) {
     return (
       <ViewportProvider>
         <PokemonProvider>
